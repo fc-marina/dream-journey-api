@@ -23,9 +23,7 @@ namespace DreamJourneyAPI.Repositories
 
         public async Task<DreamModel> GetById(int id)
         {
-            return await _dbContext.DreamModel
-                .Include(dream => dream.User)
-                .FirstOrDefaultAsync(dream => dream.Id == id);
+            return await _dbContext.DreamModel.Include(dream => dream.User).FirstOrDefaultAsync(dream => dream.Id == id);
         }
 
         public async Task<DreamModel> Create(DreamModel dreamModel)
@@ -35,12 +33,13 @@ namespace DreamJourneyAPI.Repositories
             return dreamModel;
         }
 
-        public async Task<DreamModel> Update(DreamModel dreamModel, int id)
+        public async Task<DreamModel?> Update(DreamModel dreamModel, int id)
         {
             DreamModel dream = await GetById(id);
             if (dream == null)
             {
-                throw new Exception($"Dream id {id} not found");
+                return dream;
+                //throw new Exception($"Dream id {id} not found");
             }
 
             dream.Name = dreamModel.Name;
@@ -60,7 +59,8 @@ namespace DreamJourneyAPI.Repositories
             DreamModel dream = await GetById(id);
             if (dream == null)
             {
-                throw new Exception($"Dream id {id} not found");
+                return false;
+                //throw new Exception($"Dream id {id} not found");
             }
 
             _dbContext.DreamModel.Remove(dream);

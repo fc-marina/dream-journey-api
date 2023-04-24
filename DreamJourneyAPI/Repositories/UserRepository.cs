@@ -18,7 +18,7 @@ namespace DreamJourneyAPI.Repositories
                 .ToListAsync();
         }
 
-        public async Task<UserModel> GetById(int id)
+        public async Task<UserModel?> GetById(int id)
         {
             return await _dbContext.UserModel.FirstOrDefaultAsync( user => user.Id == id);
         }
@@ -35,7 +35,8 @@ namespace DreamJourneyAPI.Repositories
             UserModel user = await GetById(id);
             if (user == null)
             {
-                throw new Exception($"User id {id} not found");
+                return user;
+                //throw new Exception($"User id {id} not found");
             }
 
             user.Name = userModel.Name;
@@ -45,7 +46,6 @@ namespace DreamJourneyAPI.Repositories
             await _dbContext.SaveChangesAsync();
 
             return user;
-
         }
 
         public async Task<bool> Delete(int id)
@@ -53,7 +53,8 @@ namespace DreamJourneyAPI.Repositories
             UserModel user = await GetById(id);
             if (user == null)
             {
-                throw new Exception($"User id {id} not found");
+                return false;
+                //throw new Exception($"User id {id} not found");
             }
 
             _dbContext.UserModel.Remove(user);

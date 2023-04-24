@@ -1,4 +1,5 @@
 ﻿using DreamJourneyAPI.Models;
+using DreamJourneyAPI.Repositories;
 using DreamJourneyAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,11 +32,17 @@ namespace DreamJourneyAPI.Controllers
         /// <param name="id"> Para a busca de um sonho é obrigatório que seja necessariamente informado um id.</param>
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso o id exista e a busca tenha sido realizada com sucesso</response>
+        /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<DreamModel>> GetById(int id)
         {
             DreamModel dream = await _dreamRepository.GetById(id);
+            if (dream == null)
+            {
+                return NotFound($"Dream id {id} not found");
+            }
             return Ok(dream);
+
         }
 
         /// <summary>
@@ -43,12 +50,15 @@ namespace DreamJourneyAPI.Controllers
         /// </summary>
         /// <param name="dreamModel"> Para a criação de um sonho é obrigatório que sejam necessariamente informados os campos name e description.</param>
         /// <returns>ActionResult</returns>
-        /// <response code="200">Caso inserção seja feita com sucesso</response>
+        /// <response code="201">Caso inserção seja feita com sucesso</response>
+        /// <response code="500">Caso campo obrigatório esteja com valor nulo</response>
+        /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<DreamModel>> Create([FromBody] DreamModel dreamModel)
         {
             DreamModel dream = await _dreamRepository.Create(dreamModel);
-            return Ok(dream);
+            return CreatedAtAction(nameof(GetById), new { id = dream.Id }, dream);
         }
 
         /// <summary>
@@ -57,11 +67,20 @@ namespace DreamJourneyAPI.Controllers
         /// <param name="dreamModel"> Para a atualização de um sonho adicione as novas informações nos campos que deseja atualizar. </param>
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso a alteração tenha sido realizada com sucesso</response>
+        /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
+        /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
+        /// <response code="500">Caso campo obrigatório esteja com valor nulo</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(DreamModel), 200)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<DreamModel>> Update([FromBody] DreamModel dreamModel, int id)
         {
             dreamModel.Id = id;
             DreamModel dream = await _dreamRepository.Update(dreamModel, id);
+            if (dream == null)
+            {
+                return NotFound($"Dream id {id} not found");
+            }
             return Ok(dream);
         }
 
@@ -71,11 +90,16 @@ namespace DreamJourneyAPI.Controllers
         /// <param name="id"> Para a exclusão de um sonho é obrigatório que seja informado um id. </param>
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso o id exista e a exclusão tenha sido realizada com sucesso</response>
+        /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
         [HttpDelete("{id}")]
         public async Task<ActionResult<DreamModel>> Delete(int id)
         {
             bool isDreamDeleted = await _dreamRepository.Delete(id);
-            return Ok(isDreamDeleted);
+            if (!isDreamDeleted)
+            {
+                return NotFound($"Dream id {id} not found");
+            }
+            return Ok($"Dream deleted: {isDreamDeleted}");
         }
     }
 }
