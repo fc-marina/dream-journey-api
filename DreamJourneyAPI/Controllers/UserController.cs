@@ -1,4 +1,5 @@
-﻿using DreamJourneyAPI.Models;
+﻿using DreamJourneyAPI.Data.Dtos.UserDto;
+using DreamJourneyAPI.Models;
 using DreamJourneyAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,16 +47,21 @@ namespace DreamJourneyAPI.Controllers
         /// <summary>
         /// Adiciona um usuário ao banco de dados
         /// </summary>
-        /// <param name="userModel"> Para a criação de um usuário é obrigatório que sejam necessariamente informados os campos name e birthDate.</param>
+        /// <param name="userDto"> Para a criação de um usuário é obrigatório que sejam necessariamente informados os campos name e birthDate.</param>
         /// <returns>ActionResult</returns>
         /// <response code="201">Caso inserção seja feita com sucesso</response>
         /// <response code="500">Caso campo obrigatório esteja com valor nulo</response>
         /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<UserModel>> Create([FromBody] UserModel userModel)
+        public async Task<ActionResult<UserModel>> Create([FromBody] CreateUserDto userDto)
         {
-            UserModel user = await _userRepository.Create(userModel);
+            UserModel user = new UserModel
+            {
+                Name = userDto.Name,
+                BirthDate = userDto.BirthDate,
+            };
+            user = await _userRepository.Create(user);
             return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
         }
 

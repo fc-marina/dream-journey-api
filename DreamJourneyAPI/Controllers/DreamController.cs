@@ -1,4 +1,5 @@
-﻿using DreamJourneyAPI.Models;
+﻿using DreamJourneyAPI.Data.Dtos.DreamDto;
+using DreamJourneyAPI.Models;
 using DreamJourneyAPI.Repositories;
 using DreamJourneyAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,8 @@ namespace DreamJourneyAPI.Controllers
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso a busca da lista tenha sido realizada com sucesso</response>
         [HttpGet]
-        public async Task <ActionResult<List<DreamModel>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 10) {
+        public async Task<ActionResult<List<DreamModel>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 10)
+        {
             List<DreamModel> dreams = await _dreamRepository.GetAll(skip, take);
             return Ok(dreams);
         }
@@ -55,9 +57,17 @@ namespace DreamJourneyAPI.Controllers
         /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<DreamModel>> Create([FromBody] DreamModel dreamModel)
+        public async Task<ActionResult<DreamModel>> Create([FromBody] CreateDreamDto dreamModel)
         {
-            DreamModel dream = await _dreamRepository.Create(dreamModel);
+            DreamModel dream = new DreamModel
+            {
+                Name = dreamModel.Name,
+                Description = dreamModel.Description,
+                LifeArea = dreamModel.LifeArea,
+                Status = dreamModel.Status,
+                UserId = dreamModel.UserId,
+            };
+            dream = await _dreamRepository.Create(dream);
             return CreatedAtAction(nameof(GetById), new { id = dream.Id }, dream);
         }
 
@@ -73,10 +83,18 @@ namespace DreamJourneyAPI.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(DreamModel), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<DreamModel>> Update([FromBody] DreamModel dreamModel, int id)
+        public async Task<ActionResult<DreamModel>> Update([FromBody] UpdateDreamDto dreamModel, int id)
         {
             dreamModel.Id = id;
-            DreamModel dream = await _dreamRepository.Update(dreamModel, id);
+            DreamModel dream = new DreamModel
+            {
+                Name = dreamModel.Name,
+                Description = dreamModel.Description,
+                LifeArea = dreamModel.LifeArea,
+                Status = dreamModel.Status,
+                UserId = dreamModel.UserId,
+            };
+            dream = await _dreamRepository.Update(dream, id);
             if (dream == null)
             {
                 return NotFound($"Dream id {id} not found");
