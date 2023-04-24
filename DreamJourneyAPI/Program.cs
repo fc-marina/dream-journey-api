@@ -3,6 +3,7 @@ using DreamJourneyAPI.Repositories;
 using DreamJourneyAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace DreamJourneyAPI
 {
@@ -17,6 +18,9 @@ namespace DreamJourneyAPI
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DreamJourneyAPI", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             builder.Services.AddEntityFrameworkSqlServer()

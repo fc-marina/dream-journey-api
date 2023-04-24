@@ -14,12 +14,23 @@ namespace DreamJourneyAPI.Controllers
             _userRepository = userRepository;
         }
 
+        /// <summary>
+        /// Retorna a lista de usuários
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        /// <response code="200">Caso a busca da lista tenha sido realizada com sucesso</response>
         [HttpGet]
         public async Task <ActionResult<List<UserModel>>> GetAll() {
             List<UserModel> users = await _userRepository.GetAll();
             return Ok(users);
         }
 
+        /// <summary>
+        /// Retorna o usuário cujo o id tenha sido informado
+        /// </summary>
+        /// <param name="id"> Para a busca de um usuário é obrigatório que seja necessariamente informado um id.</param>
+        /// <returns>ActionResult</returns>
+        /// <response code="200">Caso o id exista e a busca tenha sido realizada com sucesso</response>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetById(int id)
         {
@@ -27,6 +38,12 @@ namespace DreamJourneyAPI.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Adiciona um usuário ao banco de dados
+        /// </summary>
+        /// <param name="userModel"> Para a criação de um usuário é obrigatório que sejam necessariamente informados os campos name e birthDate.</param>
+        /// <returns>ActionResult</returns>
+        /// <response code="200">Caso inserção seja feita com sucesso</response>
         [HttpPost]
         public async Task<ActionResult<UserModel>> Create([FromBody] UserModel userModel)
         {
@@ -34,6 +51,12 @@ namespace DreamJourneyAPI.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Atualiza, no banco de dados, o usuário cujo o id tenha sido informado
+        /// </summary>
+        /// <param name="userModel"> Para a atualização de um usuário adicione as novas informações nos campos que deseja atualizar. </param>
+        /// <returns>ActionResult</returns>
+        /// <response code="200">Caso a alteração tenha sido realizada com sucesso</response>
         [HttpPut("{id}")]
         public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
         {
@@ -42,6 +65,12 @@ namespace DreamJourneyAPI.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Retorna um booleano "true" quando excluído o usuário cujo o id foi informado
+        /// </summary>
+        /// <param name="id"> Para a exclusão de um usuário é obrigatório que seja informado um id. </param>
+        /// <returns>ActionResult</returns>
+        /// <response code="200">Caso o id exista e a exclusão tenha sido realizada com sucesso</response>
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserModel>> Delete(int id)
         {
