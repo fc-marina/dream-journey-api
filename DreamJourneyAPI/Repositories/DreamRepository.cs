@@ -16,12 +16,16 @@ namespace DreamJourneyAPI.Repositories
 
         public async Task<List<DreamModel>> GetAll()
         {
-            return await _dbContext.DreamModel.ToListAsync();
+            return await _dbContext.DreamModel
+                .Include(dream => dream.User)
+                .ToListAsync();
         }
 
         public async Task<DreamModel> GetById(int id)
         {
-            return await _dbContext.DreamModel.FirstOrDefaultAsync(dream => dream.Id == id);
+            return await _dbContext.DreamModel
+                .Include(dream => dream.User)
+                .FirstOrDefaultAsync(dream => dream.Id == id);
         }
 
         public async Task<DreamModel> Create(DreamModel dreamModel)
