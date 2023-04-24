@@ -9,6 +9,7 @@ namespace DreamJourneyAPI.Models
         public string? Description { get; set; }
         public LifeArea LifeArea { get; set; }
         public StatusDream Status { get; set; }
-
+        public int? UserId { get; set; }
+        public virtual UserModel? User { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace DreamJourneyAPI.Data.Map
             builder.Property(x => x.Description).IsRequired();
             builder.Property(x => x.LifeArea);
             builder.Property(x => x.Status);
+            builder.Property(x => x.UserId);
+            builder.HasOne(x => x.User);
         }
     }
 }

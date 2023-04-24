@@ -14,17 +14,17 @@ namespace DreamJourneyAPI.Repositories
         }
         public async Task<List<UserModel>> GetAll()
         {
-            return await _dbContext.Users.ToListAsync();
+            return await _dbContext.UserModel.ToListAsync();
         }
 
         public async Task<UserModel> GetById(int id)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync( user => user.Id == id);
+            return await _dbContext.UserModel.FirstOrDefaultAsync( user => user.Id == id);
         }
 
         public async Task<UserModel> Create(UserModel userModel)
         {
-            await _dbContext.Users.AddAsync(userModel);
+            await _dbContext.UserModel.AddAsync(userModel);
             await _dbContext.SaveChangesAsync();
             return userModel;
         }
@@ -40,7 +40,7 @@ namespace DreamJourneyAPI.Repositories
             user.Name = userModel.Name;
             user.BirthDate = userModel.BirthDate;
 
-            _dbContext.Users.Update(user);
+            _dbContext.UserModel.Update(user);
             await _dbContext.SaveChangesAsync();
 
             return user;
@@ -55,7 +55,7 @@ namespace DreamJourneyAPI.Repositories
                 throw new Exception($"User id {id} not found");
             }
 
-            _dbContext.Users.Remove(user);
+            _dbContext.UserModel.Remove(user);
             await _dbContext.SaveChangesAsync();
             return true;
         }

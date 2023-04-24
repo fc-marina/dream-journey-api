@@ -25,6 +25,7 @@ namespace DreamJourneyAPI
                 );
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IDreamRepository, DreamRepository>();
 
             var app = builder.Build();
 

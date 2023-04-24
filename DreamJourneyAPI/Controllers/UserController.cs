@@ -34,7 +34,7 @@ namespace DreamJourneyAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
         {
             userModel.Id = id;

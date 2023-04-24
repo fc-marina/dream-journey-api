@@ -12,8 +12,8 @@ namespace DreamJourneyAPI.Data
 
         }
 
-        public DbSet<UserModel> Users { get; set; }
-        public DbSet<UserModel> Dreams { get; set; }
+        public DbSet<UserModel> UserModel { get; set; }
+        public DbSet<DreamModel> DreamModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
