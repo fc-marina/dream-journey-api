@@ -1,12 +1,14 @@
-﻿namespace DreamJourneyAPI.Models
+﻿using DreamJourneyAPI.Enums;
+
+namespace DreamJourneyAPI.Models
 {
     public class DreamModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public int LifeArea { get; set; }
-        public int Status { get; set; }
+        public LifeArea LifeArea { get; set; }
+        public StatusDream Status { get; set; }
 
     }
 }
