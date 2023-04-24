@@ -14,9 +14,9 @@ namespace DreamJourneyAPI.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<DreamModel>> GetAll()
+        public async Task<List<DreamModel>> GetAll(int skip, int take)
         {
-            return await _dbContext.DreamModel
+            return await _dbContext.DreamModel.Skip(skip).Take(take)
                 .Include(dream => dream.User)
                 .ToListAsync();
         }

@@ -20,8 +20,8 @@ namespace DreamJourneyAPI.Controllers
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso a busca da lista tenha sido realizada com sucesso</response>
         [HttpGet]
-        public async Task <ActionResult<List<UserModel>>> GetAll() {
-            List<UserModel> users = await _userRepository.GetAll();
+        public async Task <ActionResult<List<UserModel>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 10) {
+            List<UserModel> users = await _userRepository.GetAll(skip, take);
             return Ok(users);
         }
 

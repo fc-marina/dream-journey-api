@@ -12,9 +12,10 @@ namespace DreamJourneyAPI.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAll(int skip, int take)
         {
-            return await _dbContext.UserModel.ToListAsync();
+            return await _dbContext.UserModel.Skip(skip).Take(take)
+                .ToListAsync();
         }
 
         public async Task<UserModel> GetById(int id)
