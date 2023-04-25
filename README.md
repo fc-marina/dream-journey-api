@@ -49,17 +49,29 @@ A busca de sonhos/donos retornará uma lista de sonhos/donos em formato JSON, co
 Exemplo de objeto sonho com usuário associado. 
 
   { 
+  
     "id": 3, 
+    
     "name": "Me tornar Escritora", 
+    
     "description": "Começar a escrever um livro em novembro", 
+    
     "lifeArea": 0, 
+    
     "status": 1, 
+    
     "userId": 3, 
+    
     "user": { 
+    
       "id": 3, 
+      
       "name": "João Juliano", 
+      
       "birthDate": "2002-05-30T06:40:22.282" 
+      
     } 
+    
   } 
 
 ### Retorno de um sonho/dono cadastrado 
