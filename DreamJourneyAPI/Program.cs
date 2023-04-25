@@ -1,3 +1,4 @@
+using DreamJourneyAPI.Controllers;
 using DreamJourneyAPI.Data;
 using DreamJourneyAPI.Repositories;
 using DreamJourneyAPI.Repositories.Interfaces;
@@ -13,7 +14,10 @@ namespace DreamJourneyAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add<UnhandledExceptionFilterAttribute>();
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {

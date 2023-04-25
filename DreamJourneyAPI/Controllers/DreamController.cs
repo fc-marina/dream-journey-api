@@ -21,7 +21,9 @@ namespace DreamJourneyAPI.Controllers
         /// </summary>
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso a busca da lista tenha sido realizada com sucesso</response>
+        /// <response code="500">Erro interno do servidor</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<DreamModel>>> GetAll([FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
             List<DreamModel> dreams = await _dreamRepository.GetAll(skip, take);
@@ -35,7 +37,9 @@ namespace DreamJourneyAPI.Controllers
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso o id exista e a busca tenha sido realizada com sucesso</response>
         /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
+        /// <response code="500">Erro interno do servidor</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DreamModel>> GetById(int id)
         {
             DreamModel dream = await _dreamRepository.GetById(id);
@@ -53,10 +57,11 @@ namespace DreamJourneyAPI.Controllers
         /// <param name="dreamModel"> Para a criação de um sonho é obrigatório que sejam necessariamente informados os campos name e description.</param>
         /// <returns>ActionResult</returns>
         /// <response code="201">Caso inserção seja feita com sucesso</response>
-        /// <response code="500">Caso campo obrigatório esteja com valor nulo</response>
+        /// <response code="500">Caso campo obrigatório esteja com valor nulo ou erro interno do servidor</response>
         /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DreamModel>> Create([FromBody] CreateDreamDto dreamModel)
         {
             DreamModel dream = new DreamModel
@@ -79,10 +84,11 @@ namespace DreamJourneyAPI.Controllers
         /// <response code="200">Caso a alteração tenha sido realizada com sucesso</response>
         /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
         /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
-        /// <response code="500">Caso campo obrigatório esteja com valor nulo</response>
+        /// <response code="500">Caso campo obrigatório esteja com valor nulo ou erro interno do servidor</response>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(DreamModel), 200)]
         [ProducesResponseType(typeof(string), 404)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DreamModel>> Update([FromBody] UpdateDreamDto dreamModel, int id)
         {
             dreamModel.Id = id;
@@ -109,7 +115,9 @@ namespace DreamJourneyAPI.Controllers
         /// <returns>ActionResult</returns>
         /// <response code="200">Caso o id exista e a exclusão tenha sido realizada com sucesso</response>
         /// <response code="404">Caso o id do sonho não tenha sido encontrado</response>
+        /// <response code="500">Erro interno do servidor</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DreamModel>> Delete(int id)
         {
             bool isDreamDeleted = await _dreamRepository.Delete(id);
