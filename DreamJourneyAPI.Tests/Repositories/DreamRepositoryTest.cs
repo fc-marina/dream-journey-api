@@ -21,8 +21,8 @@ namespace DreamJourneyAPI.Tests.Repositories
 
             var dreamModels = new List<DreamModel>
             {
-            new DreamModel { Id = 1, Name = "Dream1", Description = "User1" },
-            new DreamModel { Id = 2, Name = "Dream2", Description = "User2" }
+            new DreamModel { Id = 1, Name = "Dream1", Description = "Description1" },
+            new DreamModel { Id = 2, Name = "Dream2", Description = "Description2" }
             }.AsQueryable();
 
             var dbSetMock = new Mock<DbSet<DreamModel>>();
