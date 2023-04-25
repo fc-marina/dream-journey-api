@@ -54,14 +54,15 @@ namespace DreamJourneyAPI.Controllers
         /// <summary>
         /// Adiciona um sonho ao banco de dados
         /// </summary>
-        /// <param name="dreamModel"> Para a criação de um sonho é obrigatório que sejam necessariamente informados os campos name e description.</param>
+        /// <param name="dreamModel"> Para a criação de um sonho é obrigatório que sejam necessariamente informados os campos name e description.
+        /// Quando informado, o campo userId deve conter valor válido. Enums "lifeArea" e "status" aceitam numeros inteiros de 0-3</param>
         /// <returns>ActionResult</returns>
         /// <response code="201">Caso inserção seja feita com sucesso</response>
-        /// <response code="500">Caso campo obrigatório esteja com valor nulo ou erro interno do servidor</response>
+        /// <response code="500">Caso campo esteja com valor incorreto ou erro interno do servidor</response>
         /// <response code="400">Caso JSON ou informação em campo esteja no formato incorreto</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DreamModel>> Create([FromBody] CreateDreamDto dreamModel)
         {
             DreamModel dream = new DreamModel
