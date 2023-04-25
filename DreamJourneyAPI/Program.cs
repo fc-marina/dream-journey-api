@@ -25,7 +25,8 @@ namespace DreamJourneyAPI
 
             builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DreamJourneyDbContext>(
-                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+                      options => options.UseSqlServer("Data Source=fcmarina-server.database.windows.net; Initial Catalog=DB_DreamJourney;User Id=fcmarinaserver;Password=Senha123")
+                      //options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
                 );
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -34,11 +35,11 @@ namespace DreamJourneyAPI
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             app.UseHttpsRedirection();
             app.UseAuthorization();
